@@ -1,0 +1,344 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMM HOUSE — Coffee & Pastries | VIP Membership & Menu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel for luxury serif branding, Inter for UI, JetBrains Mono for codes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- QRCode.js for real scannable QR generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Canvas Confetti for 10/10 Reward Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-obsidian: #0B0B0D;
+            --gold-antique: #D9A05B;
+            --gold-warm: #E8B878;
+            --gold-champagne: #EED69C;
+            --ivory-medallion: #F5F2EB;
+            --plum-strip: #3D1B35;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #09080A;
+            color: #F4F4F5;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Cozy Warm Cafe Ambient Background */
+        .cafe-ambient-bg {
+            background:
+                radial-gradient(circle at 18% 12%, rgba(217, 160, 91, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 85% 18%, rgba(61, 27, 53, 0.5) 0%, transparent 52%),
+                radial-gradient(circle at 50% 92%, rgba(120, 68, 28, 0.2) 0%, transparent 55%),
+                linear-gradient(180deg, #110E0D 0%, #09080A 100%);
+        }
+
+        .font-serif-luxury {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Antique Brushed Gold / Rose-Gold Foil Gradients (Matching Reference Images) */
+        .text-gold-metallic {
+            background: linear-gradient(135deg, #F6DFB0 0%, #E8B878 46%, #C48942 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gold-metallic {
+            background: linear-gradient(135deg, #F3D5A5 0%, #E2AD67 50%, #C2863E 100%);
+        }
+
+        .bg-champagne-banner {
+            background: linear-gradient(180deg, #F3DFAD 0%, #EAD090 100%);
+        }
+
+        /* Obsidian Matte Black Card Surface */
+        .card-brushed-surface {
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.01) 0px,
+                    rgba(255, 255, 255, 0.01) 1px,
+                    transparent 1px,
+                    transparent 3px
+                ),
+                radial-gradient(circle at 80% 18%, rgba(217, 160, 91, 0.08) 0%, transparent 48%),
+                linear-gradient(160deg, #121215 0%, #0B0B0D 60%, #100D11 100%);
+            box-shadow:
+                0 28px 60px -15px rgba(0, 0, 0, 0.92),
+                0 0 0 1px rgba(217, 160, 91, 0.35),
+                inset 0 1px 0 rgba(246, 223, 176, 0.2);
+        }
+
+        /* Cream / Ivory Medallion Token with Subtle Inner Depth */
+        .ivory-medallion {
+            background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, #F5F2EB 65%, #E3DDD0 100%);
+            box-shadow:
+                0 4px 10px rgba(0, 0, 0, 0.55),
+                inset 0 2px 3px rgba(255, 255, 255, 0.9),
+                inset 0 -2px 4px rgba(168, 152, 124, 0.45);
+        }
+
+        /* 3D Flippable Card Container */
+        .perspective-stage {
+            perspective: 1600px;
+        }
+
+        .flip-card-inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.34, 1.32, 0.64, 1);
+        }
+
+        .flip-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-face {
+            grid-area: 1 / 1;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .flip-face-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Stamp Token Interactive Animations */
+        .stamp-token {
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+        }
+
+        .stamp-token:active {
+            transform: scale(0.9);
+        }
+
+        @keyframes stampBounce {
+            0% { transform: scale(0.55) rotate(-14deg); }
+            65% { transform: scale(1.14) rotate(4deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .stamp-animate {
+            animation: stampBounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes starPulse {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(217, 160, 91, 0.7)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 16px rgba(232, 184, 120, 1)); transform: scale(1.08); }
+        }
+
+        .star-glow-active {
+            animation: starPulse 1.8s infinite ease-in-out;
+        }
+
+        /* QR Code Custom Styling inside Plum Strip */
+        #cardBackQrBox img, #cardBackQrBox canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+            border-radius: 4px;
+        }
+
+        #posModalQrBox img, #posModalQrBox canvas {
+            width: 176px !important;
+            height: 176px !important;
+            display: block;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen cafe-ambient-bg flex flex-col items-center justify-start py-4 px-3 sm:px-6 selection:bg-amber-500/30 selection:text-amber-100">
+
+    <!-- ========================================================================= -->
+    <!-- TOP BRAND & ROLE STATUS BAR                                               -->
+    <!-- ========================================================================= -->
+    <header class="w-full max-w-2xl flex flex-wrap items-center justify-between gap-2 mb-3 px-1">
+        <!-- Brand Identity & Live QR Verification -->
+        <div class="flex items-center gap-2 bg-zinc-950/90 border border-amber-500/25 px-3 py-1.5 rounded-full backdrop-blur-md">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="font-serif-luxury text-[11px] font-bold tracking-wider uppercase text-amber-200">GMM HOUSE</span>
+            <span id="roleBadge" class="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-300 border border-zinc-700">
+                Read-Only
+            </span>
+        </div>
+
+        <!-- Right Controls: POS Fullscreen Pass & Barista / Owner Mode -->
+        <div class="flex items-center gap-2">
+            <button id="openPosModalBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-amber-500/35 text-amber-200 text-xs font-semibold transition active:scale-95">
+                <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2M7 12h10"/>
+                </svg>
+                <span>POS Scan</span>
+            </button>
+
+            <button id="staffToggleBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#3D1B35] hover:bg-[#512447] border border-amber-400/50 text-amber-100 text-xs font-bold tracking-wide shadow-lg transition active:scale-95">
+                <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <span id="staffBtnLabel">Barista / Owner Mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- PRIMARY NAVIGATION TABS: Membership Card | How It Works | Cafe Menu       -->
+    <!-- ========================================================================= -->
+    <nav class="w-full max-w-2xl mb-4 px-1" aria-label="Primary Sections">
+        <div class="grid grid-cols-3 gap-1.5 p-1.5 rounded-2xl bg-zinc-950/90 border border-amber-500/25 backdrop-blur-md shadow-xl">
+            <button id="navTabCard" type="button" data-tab="card" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition flex items-center justify-center gap-1.5 bg-gold-metallic text-zinc-950 shadow">
+                <span>💳</span>
+                <span>Membership Card</span>
+            </button>
+            <button id="navTabGuide" type="button" data-tab="guide" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-1.5 text-zinc-300 hover:text-amber-200">
+                <span>✨</span>
+                <span>How It Works</span>
+            </button>
+            <button id="navTabMenu" type="button" data-tab="menu" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-1.5 text-zinc-300 hover:text-amber-200">
+                <span>🍰</span>
+                <span>Cafe Menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: MEMBERSHIP CARD VIEW (MODELED AFTER REFERENCE IMAGES 5 & 6)        -->
+    <!-- ========================================================================= -->
+    <div id="sectionCard" class="w-full max-w-xl flex flex-col items-center">
+        <!-- Flip Controls Row -->
+        <div class="w-full flex items-center justify-between gap-2 mb-3 px-1">
+            <div class="inline-flex rounded-xl bg-zinc-950/90 p-1 border border-amber-500/20">
+                <button id="showFrontBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-bold tracking-wide transition bg-gold-metallic text-zinc-950 shadow">
+                    Card Front
+                </button>
+                <button id="showBackBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition text-zinc-300 hover:text-amber-200">
+                    Card Back (Stamps)
+                </button>
+            </div>
+
+            <button id="flipTriggerBtn" type="button" class="flex items-center gap-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 px-3 py-1.5 rounded-xl bg-zinc-950/85 border border-amber-500/25 transition active:scale-95">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>Flip Card</span>
+            </button>
+        </div>
+
+        <!-- 3D FLIPPABLE VIP MEMBERSHIP CARD -->
+        <main class="w-full perspective-stage">
+            <div id="flipCardInner" class="flip-card-inner">
+
+                <!-- ============================================================= -->
+                <!-- CARD FRONT (MATCHING REFERENCE IMAGE 5)                       -->
+                <!-- ============================================================= -->
+                <section class="flip-face card-brushed-surface rounded-3xl overflow-hidden relative flex flex-col justify-between">
+                    <!-- Upper Right Treble Clef & Soundwave Watermark -->
+                    <div class="pointer-events-none absolute top-2 right-2 w-56 h-28 opacity-[0.14]" aria-hidden="true">
+                        <svg class="w-full h-full" viewBox="0 0 240 120" fill="none">
+                            <g fill="#D9A05B">
+                                <rect x="12" y="52" width="2.5" height="16" rx="1.2"/>
+                                <rect x="19" y="45" width="2.5" height="30" rx="1.2"/>
+                                <rect x="26" y="36" width="2.5" height="48" rx="1.2"/>
+                                <rect x="33" y="44" width="2.5" height="32" rx="1.2"/>
+                                <rect x="40" y="30" width="2.5" height="60" rx="1.2"/>
+                                <rect x="47" y="48" width="2.5" height="24" rx="1.2"/>
+                                <rect x="96" y="42" width="2.5" height="36" rx="1.2"/>
+                                <rect x="103" y="28" width="2.5" height="64" rx="1.2"/>
+                                <rect x="110" y="18" width="2.5" height="84" rx="1.2"/>
+                                <rect x="117" y="34" width="2.5" height="52" rx="1.2"/>
+                                <rect x="124" y="22" width="2.5" height="76" rx="1.2"/>
+                                <rect x="131" y="38" width="2.5" height="44" rx="1.2"/>
+                                <rect x="138" y="46" width="2.5" height="28" rx="1.2"/>
+                                <rect x="145" y="52" width="2.5" height="16" rx="1.2"/>
+                            </g>
+                            <path d="M72 22 C84 22, 88 38, 76 50 C62 63, 50 76, 64 94 C73 106, 88 96, 82 84 C76 75, 64 81, 69 91 M73 14 L68 112 C67 120, 57 122, 55 115" stroke="#E8B878" stroke-width="3.2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <!-- Bottom Right Thai/Kanok Metallic Floral Filigree Watermark -->
+                    <div class="pointer-events-none absolute bottom-16 right-2 w-32 h-32 opacity-30" aria-hidden="true">
+                        <svg class="w-full h-full" viewBox="0 0 140 140" fill="none">
+                            <defs>
+                                <linearGradient id="kanokFrontGold" x1="0" y1="0" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#E8B878"/>
+                                    <stop offset="100%" stop-color="#7A5226"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M125 130 C95 130, 72 114, 65 88 C58 64, 72 42, 92 26 C88 46, 94 60, 108 66 C98 48, 104 28, 122 14 C116 36, 122 52, 134 62 L134 130 Z" fill="url(#kanokFrontGold)"/>
+                            <path d="M88 132 C64 128, 46 112, 42 90 C38 72, 48 56, 62 46 C58 62, 64 74, 76 80 C66 92, 72 112, 88 132 Z" fill="url(#kanokFrontGold)" opacity="0.75"/>
+                            <path d="M56 132 C38 126, 26 114, 24 98 C22 86, 30 76, 40 70 C36 82, 40 94, 56 132 Z" fill="url(#kanokFrontGold)" opacity="0.5"/>
+                        </svg>
+                    </div>
+
+                    <!-- Main Front Content -->
+                    <div class="relative z-10 px-5 sm:px-7 pt-5 pb-4 flex flex-col justify-between">
+                        <!-- Live Points Pill in Top Left -->
+                        <div class="flex items-center justify-between">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3D1B35]/90 border border-amber-400/40 shadow">
+                                <span class="text-[9.5px] uppercase tracking-wider text-amber-200/80 font-semibold">Points:</span>
+                                <span id="frontPointsDisplay" class="font-mono-code text-xs font-extrabold text-amber-200">150 PTS</span>
+                            </div>
+                            <span class="text-[9px] font-mono-code tracking-widest uppercase text-amber-300/65">VIP CARD</span>
+                        </div>
+
+                        <!-- Top Center Emblem: G [Soundwave] H (Coffee Cup with Steam & Saucer) HOUSE -->
+                        <div class="flex flex-col items-center text-center mt-1">
+                            <div class="flex items-center justify-center gap-1">
+                                <span class="font-serif-luxury text-4xl sm:text-5xl font-extrabold text-gold-metallic leading-none">G</span>
+                                <svg class="w-9 h-9 sm:w-10 sm:h-10 text-[#E8B878]" viewBox="0 0 36 32" fill="currentColor">
+                                    <rect x="2" y="13" width="2.2" height="6" rx="1.1"/>
+                                    <rect x="6" y="9" width="2.2" height="14" rx="1.1"/>
+                                    <rect x="10" y="5" width="2.2" height="22" rx="1.1"/>
+                                    <rect x="14" y="11" width="2.2" height="10" rx="1.1"/>
+                                    <rect x="18" y="3" width="2.2" height="26" rx="1.1"/>
+                                    <rect x="22" y="8" width="2.2" height="16" rx="1.1"/>
+                                    <rect x="26" y="4" width="2.2" height="24" rx="1.1"/>
+                                    <rect x="30" y="10" width="2.2" height="12" rx="1.1"/>
+                                </svg>
+                                <!-- H shaped Coffee Cup with Steam & Saucer -->
+                                <svg class="w-11 h-11 sm:w-12 sm:h-12 -ml-1" viewBox="0 0 46 42" fill="none">
+                                    <defs>
+                                        <linearGradient id="frontCupGold" x1="0" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse">
+                                            <stop offset="0%" stop-color="#F6DFB0"/>
+                                            <stop offset="50%" stop-color="#E8B878"/>
+                                            <stop offset="100%" stop-color="#C48942"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Rising Steam -->
+                                    <path d="M21 11C21 8.5 23.5 7.5 23.5 5C23.5 3.5 22 2.5 22 2.5M26 12C26 9.5 28.5 8.5 28.5 6" stroke="url(#frontCupGold)" stroke-width="2" stroke-linecap="round"/>
+                                    <!-- Cup Body forming H -->
+                                    <path d="M11 14H32V23C32 28.5228 27.5228 33 22 33H21C15.4772 33 11 28.5228 11 23V14Z" fill="url(#frontCupGold)"/>
+                                    <!-- Wave Cutout across Cup -->
+                                    <path d="M10 21C14 19 18 23 22 21C26 19 29 22 33 20" stroke="#0B0B0D" stroke-width="2.2" stroke-linecap="round"/>
+                                    <!-- Cup Handle -->
+                                    <path d="M32 17H36C38.2091 17 40 18.7909 40 21C40 23.2091 38.2091 25 36 25H32" stroke="url(#frontCupGold)" stroke-width="2.8" stroke-linecap="round"/>
+                                    <!-- Curved Saucer -->
+                                    <path d="M8 34C12 37.5 31 37.5 35 34" stroke="url(#frontCupGold)" stroke-width="2.4" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <p class="font-serif-luxury text-sm sm:tex
