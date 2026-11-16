@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #0c0c0e;
+      --bg-dark: #121014;
       --card-bg: linear-gradient(135deg, #121214 0%, #1f1b14 100%);
       --card-back-bg: linear-gradient(135deg, #181518 0%, #121214 100%);
       --gold: #d4af37;
@@ -28,70 +28,68 @@
     }
 
     .app-container {
-      max-width: 950px;
+      max-width: 650px;
       margin: 0 auto;
-      padding: 15px;
+      padding: 12px;
       box-sizing: border-box;
     }
 
-    .browser-frame {
-      background: #1a1a1f;
-      border: 1px solid var(--gold);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-    }
-
-    .browser-header {
-      background: #25252b;
-      padding: 10px 15px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid #333;
-    }
-
-    .window-dots {
-      display: flex;
-      gap: 8px;
-      margin-right: 15px;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-    .dot-red { background: #ff5f56; }
-    .dot-yellow { background: #ffbd2e; }
-    .dot-green { background: #27c93f; }
-
-    .url-bar {
-      flex: 1;
-      background: #121214;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      color: var(--gold);
-      border: 1px solid #443c1d;
+    /* Top Bar */
+    .top-action-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      background: #1a171d;
+      border: 1px solid #332b38;
+      padding: 8px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-size: 11px;
     }
 
-    .nav-tabs {
+    .badge-status {
+      background: #1b261e;
+      color: #27c93f;
+      border: 1px solid #2e5238;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: bold;
       display: flex;
-      background: #161619;
-      border-bottom: 1px solid #332d12;
-      overflow-x: auto;
+      align-items: center;
+      gap: 5px;
     }
 
-    .nav-tab {
+    .action-btn {
+      background: #231c26;
+      color: var(--gold-light);
+      border: 1px solid #4a354c;
+      padding: 5px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .action-btn:hover {
+      background: #332637;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs-container {
+      display: flex;
+      background: #1b171f;
+      border: 1px solid #3d3140;
+      border-radius: 25px;
+      padding: 4px;
+      margin-bottom: 15px;
+      gap: 4px;
+    }
+
+    .nav-tab-btn {
       flex: 1;
-      padding: 12px 10px;
-      background: #161619;
+      padding: 10px 8px;
+      background: transparent;
       color: #888;
       border: none;
       cursor: pointer;
@@ -99,26 +97,56 @@
       font-size: 12px;
       text-align: center;
       font-family: 'Cinzel', serif;
-      transition: all 0.3s ease;
-      white-space: nowrap;
+      border-radius: 20px;
+      transition: all 0.2s ease;
     }
 
-    .nav-tab.active {
-      background: #222018;
-      color: var(--gold);
-      border-bottom: 3px solid var(--gold);
+    .nav-tab-btn.active {
+      background: linear-gradient(135deg, #d4af37 0%, #aa8525 100%);
+      color: #121014;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
-    .content-area {
-      padding: 20px;
+    /* Sub-Controls (Card Front/Back & Flip) */
+    .card-sub-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 0 4px;
     }
 
-    /* 3D Card Styles */
+    .sub-toggle-group {
+      display: flex;
+      background: #1b171f;
+      border: 1px solid #3d3140;
+      border-radius: 16px;
+      padding: 2px;
+    }
+
+    .sub-toggle-btn {
+      padding: 6px 14px;
+      background: transparent;
+      color: #aaa;
+      border: none;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+    }
+
+    .sub-toggle-btn.active {
+      background: #3a2e3d;
+      color: var(--gold-light);
+    }
+
+    /* 3D Card Container */
     .card-perspective {
       perspective: 1000px;
-      max-width: 600px;
-      height: 350px;
-      margin: 20px auto;
+      width: 100%;
+      height: 330px;
+      margin-bottom: 12px;
       cursor: pointer;
     }
 
@@ -126,9 +154,9 @@
       position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       transform-style: preserve-3d;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
       border-radius: 16px;
     }
 
@@ -140,7 +168,7 @@
       -webkit-backface-visibility: hidden;
       border: 2px solid var(--gold);
       border-radius: 16px;
-      padding: 22px;
+      padding: 18px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -155,59 +183,100 @@
       background: var(--card-back-bg);
       transform: rotateY(180deg);
       -webkit-transform: rotateY(180deg);
+      flex-direction: row;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .stamp-grid-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
     }
 
     .stamp-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin: 10px 0;
+      gap: 6px;
+      margin: 4px 0;
     }
 
     .stamp-slot {
-      background: #fff;
-      height: 42px;
+      background: #f4edd3;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      color: #121214;
-      font-size: 14px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+      color: #121014;
+      font-size: 13px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
       border: 2px solid var(--gold);
       cursor: pointer;
       user-select: none;
     }
 
     .stamp-slot.empty {
-      background: #2b2518;
+      background: #252018;
       color: var(--gold);
       border: 2px dashed var(--gold);
       box-shadow: none;
+      font-size: 11px;
     }
 
     .stamp-slot.reward {
       background: #ffd700;
-      color: #121214;
+      color: #121014;
       border: 2px solid #fff;
-      box-shadow: 0 0 10px #ffd700;
+      box-shadow: 0 0 8px #ffd700;
+      font-size: 15px;
     }
 
-    .menu-section {
-      background: #161619;
-      padding: 15px;
+    .card-back-right {
+      width: 115px;
+      background: #2c122c;
+      border: 1px solid var(--gold);
       border-radius: 10px;
-      border: 1px solid #333;
-      margin-bottom: 15px;
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 90%;
+      box-sizing: border-box;
+    }
+
+    /* Bottom Notice Banner */
+    .bottom-notice {
+      background: #1b171f;
+      border: 1px solid #3d3140;
+      padding: 10px 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #ccc;
+    }
+
+    /* Menu & How It Works Sections */
+    .menu-section {
+      background: #1b171f;
+      border: 1px solid #3d3140;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
     }
 
     .menu-title {
       color: var(--gold);
-      border-bottom: 1px solid #443c1d;
+      border-bottom: 1px solid #3d3140;
       padding-bottom: 6px;
       margin-top: 0;
-      font-size: 15px;
+      font-size: 14px;
       letter-spacing: 1px;
     }
 
@@ -216,8 +285,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 12px;
     }
 
     .price {
@@ -225,25 +294,8 @@
       font-weight: bold;
     }
 
-    .btn-gold {
-      background: var(--gold);
-      color: #121214;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      font-family: 'Cinzel', serif;
-      font-size: 12px;
-      transition: all 0.2s;
-    }
-
-    .btn-gold:hover {
-      background: #fff;
-    }
-
     input, textarea {
-      background: #121214;
+      background: #121014;
       border: 1px solid var(--gold);
       color: #fff;
       padding: 8px;
@@ -255,280 +307,285 @@
 </head>
 <body>
   <div class="app-container">
-    <div class="browser-frame">
-      <!-- Browser Top bar -->
-      <div class="browser-header">
-        <div class="window-dots">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
+    
+    <!-- Top Action Bar -->
+    <div class="top-action-bar">
+      <div class="badge-status">
+        <span style="width: 7px; height: 7px; background: #27c93f; border-radius: 50%; display: inline-block;"></span>
+        GMM HOUSE &nbsp;|&nbsp; <span style="color:#aaa; font-weight:normal;">READ-ONLY</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="action-btn" onclick="triggerPOSScan()">📱 POS Scan</button>
+        <button type="button" class="action-btn" onclick="switchTab('barista')">🔐 Barista / Owner Mode</button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs-container">
+      <button type="button" id="tab-btn-card" class="nav-tab-btn active" onclick="switchTab('card')">🪪 Membership Card</button>
+      <button type="button" id="tab-btn-how" class="nav-tab-btn" onclick="switchTab('how')">✨ How It Works</button>
+      <button type="button" id="tab-btn-menu" class="nav-tab-btn" onclick="switchTab('menu')">☕ Cafe Menu</button>
+    </div>
+
+    <!-- TAB 1: MEMBERSHIP CARD -->
+    <div id="view-card" style="display: block;">
+      
+      <div class="card-sub-controls">
+        <div class="sub-toggle-group">
+          <button type="button" id="btn-front" class="sub-toggle-btn active" onclick="setCardFace('front')">Card Front</button>
+          <button type="button" id="btn-back" class="sub-toggle-btn" onclick="setCardFace('back')">Card Back (Stamps)</button>
         </div>
-        <div class="url-bar">
-          <span>🔒 https://gmmhouse.com/member/GH-0001-A</span>
-          <span style="font-size: 10px; background: var(--purple-accent); padding: 2px 6px; border-radius: 3px; color: var(--gold-light);">VIP PORTAL</span>
-        </div>
+        <button type="button" class="action-btn" onclick="flipCard()">🔄 Flip Card</button>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div class="nav-tabs">
-        <button type="button" id="tab-card" class="nav-tab active" onclick="switchTab('card')">🪪 Membership Card</button>
-        <button type="button" id="tab-how" class="nav-tab" onclick="switchTab('how')">💡 How It Works</button>
-        <button type="button" id="tab-menu" class="nav-tab" onclick="switchTab('menu')">☕ Cafe Menu</button>
-        <button type="button" id="tab-barista" class="nav-tab" onclick="switchTab('barista')">🔐 Barista Mode</button>
-      </div>
+      <!-- 3D Card Container -->
+      <div class="card-perspective" onclick="flipCard()">
+        <div id="card-inner" class="card-inner">
+          
+          <!-- CARD FRONT -->
+          <div class="card-front">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div style="background: rgba(212,175,55,0.1); border: 1px solid var(--gold); padding: 3px 8px; border-radius: 6px; font-size: 10px; color: var(--gold);">
+                POINTS: <strong id="display-points">150</strong> PTS
+              </div>
+              <div style="font-size: 9px; color: var(--text-muted); letter-spacing: 1px;">VIP CARD</div>
+            </div>
 
-      <div class="content-area">
-        
-        <!-- TAB 1: MEMBERSHIP CARD -->
-        <div id="view-card" style="display: block;">
-          <div style="text-align: center; margin-bottom: 10px;">
-            <h2 style="color: var(--gold); margin: 0 0 4px 0; font-size: 18px;">GMM HOUSE VIP PASS</h2>
-            <p style="color: var(--text-muted); font-size: 12px; margin: 0;">Tap card to flip between Front & Stamp Pass Back</p>
+            <div style="text-align: center;">
+              <h1 style="color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 2px;">G 📶 ☕</h1>
+              <div style="font-size: 14px; color: var(--gold-light); letter-spacing: 4px; font-weight: bold;">H O U S E</div>
+              <div style="font-size: 8px; color: var(--text-muted); margin-top: 2px;">GMM HOUSE - COFFEE & PASTRIES<br>MEMBER EST. 2024</div>
+            </div>
+
+            <div>
+              <div style="font-size: 9px; color: var(--text-muted);">MEMBER NAME:</div>
+              <div id="display-name" style="font-size: 15px; color: #fff; font-weight: bold; letter-spacing: 1px;">ELVIRA JOY JAEN</div>
+              <div style="font-size: 9px; color: var(--text-muted); margin-top: 4px;">MEMBERSHIP NO:</div>
+              <div id="display-id" style="font-size: 13px; color: var(--gold); font-weight: bold;">GH-0001-A</div>
+              <div style="font-size: 9px; color: var(--text-muted); margin-top: 4px;">TIER:</div>
+              <div style="font-size: 11px; color: var(--gold-light); font-weight: bold;">GOLD (PLATINUM STATUS)</div>
+            </div>
+
+            <div style="background: rgba(212,175,55,0.15); border: 1px solid var(--gold); border-radius: 6px; padding: 6px 10px;">
+              <div style="font-size: 9px; font-weight: bold; color: var(--gold); margin-bottom: 2px;">BENEFITS</div>
+              <div style="font-size: 9px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; color: #ddd;">
+                <div>• 10% OFF ALL DRINKS & PASTRIES</div>
+                <div>• PRIORITY SEATING & RSVP</div>
+                <div>• EARN POINTS: 10 PTS PER ₱150</div>
+                <div>• FREE BIRTHDAY TREAT</div>
+              </div>
+            </div>
           </div>
 
-          <div class="card-perspective" onclick="flipCard()">
-            <div id="card-inner" class="card-inner">
+          <!-- CARD BACK -->
+          <div class="card-back">
+            <div class="stamp-grid-container">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 4px;">
+                <span style="color: var(--gold); font-size: 11px; font-weight: bold;">MEMBERSHIP &nbsp;<span style="color:#aaa; font-weight:normal;" id="stamp-counter-text">3 / 10 STAMPS COLLECTED</span></span>
+                <span style="font-size: 9px; background: var(--purple-accent); padding: 2px 6px; border-radius: 4px; color: var(--gold);">🔒 Locked</span>
+              </div>
+
+              <!-- Stamp Grid -->
+              <div class="stamp-grid">
+                <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(0)">☕</div>
+                <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(1)">🎸</div>
+                <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(2)">💿</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(3)">4</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(4)">5</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(5)">6</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(6)">7</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(7)">8</div>
+                <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(8)">9</div>
+                <div class="stamp-slot reward" onclick="event.stopPropagation(); toggleStamp(9)">★</div>
+              </div>
+
+              <!-- Terms & Conditions Box -->
+              <div id="terms-display-box" style="background: rgba(0,0,0,0.5); padding: 5px 8px; border-radius: 4px; font-size: 8px; color: #bbb; border: 1px solid #333; max-height: 55px; overflow-y: auto; line-height: 1.3;">
+                <strong style="color: var(--gold);">TERMS & CONDITIONS:</strong><br>
+                1. Present this card upon purchase to earn stamps and benefits.<br>
+                2. One stamp per transaction of 100 or more.<br>
+                3. Stamps and rewards are non-transferable and have no cash value.<br>
+                4. GMM House reserves the right to amend terms without prior notice.<br>
+                For inquiries, visit gmmhouse.com or follow @GMMHouse on social media.<br>
+                © 2024 GMM HOUSE. ALL RIGHTS RESERVED
+              </div>
+            </div>
+
+            <!-- Card Back Right Strip (QR & Barcode) -->
+            <div class="card-back-right">
+              <div style="background: #fff; padding: 4px; border-radius: 4px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                <!-- Mock QR Code SVG -->
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="#121014"><path d="M2 2h8v8H2V2m2 2v4h4V4H4m8-2h8v8h-8V2m2 2v4h4V4h-4M2 14h8v8H2v-8m2 2v4h4v-4H4m14-2h4v2h-4v-2m-4 2h2v4h-2v-4m4 4h2v2h-2v-2m-2-2h2v2h-2v-2m2-6h2v2h-2v-2z"/></svg>
+              </div>
+              <div style="font-size: 6px; color: var(--gold); text-align: center; font-weight: bold;">SCAN FOR REWARDS & EVENTS</div>
               
-              <!-- CARD FRONT -->
-              <div class="card-front">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                  <div>
-                    <h1 style="color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 2px;">G 📶 U</h1>
-                    <div style="font-size: 13px; color: var(--gold-light); letter-spacing: 3px; font-weight: bold;">HOUSE</div>
-                    <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">GMM HOUSE - COFFEE & PASTRIES • EST. 2024</div>
-                  </div>
-                  <div style="text-align: right; font-size: 10px; color: var(--gold); background: var(--purple-accent); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--gold);">
-                    🎵 GOLD VIP
-                  </div>
-                </div>
-
-                <div style="background: rgba(212, 175, 55, 0.08); padding: 10px 14px; border-radius: 8px; border-left: 4px solid var(--gold);">
-                  <div style="font-size: 10px; color: var(--text-muted);">MEMBER NAME:</div>
-                  <div id="display-name" style="font-size: 16px; color: #fff; font-weight: bold; letter-spacing: 1px;">ELVIRA JOY JAEN</div>
-                  <div style="display: flex; justify-content: space-between; margin-top: 6px;">
-                    <div>
-                      <span style="font-size: 9px; color: var(--text-muted);">MEMBERSHIP NO:</span><br>
-                      <span id="display-id" style="font-size: 12px; color: var(--gold); font-weight: bold;">GH-0001-A</span>
-                    </div>
-                    <div style="text-align: right;">
-                      <span style="font-size: 9px; color: var(--text-muted);">STATUS:</span><br>
-                      <span style="font-size: 11px; color: var(--gold-light); font-weight: bold;">GOLD (PLATINUM STATUS)</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="background: var(--gold); color: #121214; padding: 8px 12px; border-radius: 8px;">
-                  <div style="font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px;">👑 VIP BENEFITS:</div>
-                  <div style="font-size: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-weight: 600;">
-                    <div>• 10% OFF Drinks & Pastries</div>
-                    <div>• Priority Seating & RSVP</div>
-                    <div>• Earn Points: 10 PTS / ₱150</div>
-                    <div>• Free Birthday Treat</div>
-                  </div>
-                </div>
+              <div style="background: #fff; padding: 2px 4px; border-radius: 2px; width: 100%; text-align: center;">
+                <div style="letter-spacing: 2px; font-size: 11px; font-family: monospace; color: #000; font-weight: bold;">||||| | |||||</div>
+                <div style="font-size: 7px; color: #000; font-weight: bold;">GH-0001-A</div>
               </div>
-
-              <!-- CARD BACK -->
-              <div class="card-back">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 6px;">
-                  <span style="color: var(--gold); font-size: 12px; font-weight: bold; letter-spacing: 1px;">STAMP PASS (10 SLOTS)</span>
-                  <span style="color: var(--text-muted); font-size: 10px;" id="stamp-counter-text">Stamps: 3 / 10</span>
-                </div>
-
-                <div class="stamp-grid">
-                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(0)">☕</div>
-                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(1)">🎸</div>
-                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(2)">💿</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(3)">4</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(4)">5</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(5)">6</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(6)">7</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(7)">8</div>
-                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(8)">9</div>
-                  <div class="stamp-slot reward" onclick="event.stopPropagation(); toggleStamp(9)">★</div>
-                </div>
-
-                <div id="terms-display-box" style="background: rgba(0,0,0,0.4); padding: 6px 10px; border-radius: 6px; font-size: 9px; color: #ccc; border: 1px solid #333; max-height: 70px; overflow-y: auto;">
-                  <strong style="color: var(--gold);">TERMS & CONDITIONS:</strong><br>
-                  1. Present this card upon purchase to earn stamps and benefits.<br>
-                  2. One stamp per transaction of ₱100 or more.<br>
-                  3. Stamps and rewards are non-transferable and have no cash value.<br>
-                  4. GMM House reserves the right to amend terms without prior notice.<br>
-                  For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 GMM HOUSE.
-                </div>
-              </div>
-
+              <div style="font-size: 6px; color: #888; text-align: center;">© 2024 GMM HOUSE.</div>
             </div>
           </div>
 
-          <div style="text-align: center; margin-top: 10px;">
-            <button type="button" class="btn-gold" onclick="flipCard()">🔄 Flip Card (Front / Back)</button>
+        </div>
+      </div>
+
+      <!-- Bottom Notice Banner -->
+      <div class="bottom-notice">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span>🔒</span>
+          <span>Read-Only Customer Pass. Present to barista to earn stamps & 10% VIP discount.</span>
+        </div>
+        <button type="button" class="action-btn" onclick="switchTab('barista')">Staff Unlock</button>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: HOW IT WORKS -->
+    <div id="view-how" style="display: none;">
+      <div class="menu-section">
+        <h3 class="menu-title">💡 HOW YOUR GMM HOUSE LOYALTY CARD WORKS</h3>
+        <p style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+          Every visit to GMM House — Coffee & Pastries brings you closer to complimentary signature drinks, character roll cakes, and VIP event privileges.
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 11px;">
+          <div style="background: #121014; padding: 10px; border-radius: 6px; border: 1px solid #3d3140;">
+            <strong style="color: var(--gold);">01. SCAN & PRESENT</strong><br>Show your QR code or membership card (<span style="color: var(--gold);">GH-0001-A</span>) at the counter.
+          </div>
+          <div style="background: #121014; padding: 10px; border-radius: 6px; border: 1px solid #3d3140;">
+            <strong style="color: var(--gold);">02. COLLECT STAMPS</strong><br>Earn 1 digital stamp per transaction of ₱100 or more. Collect all 10 stamps!
+          </div>
+          <div style="background: #121014; padding: 10px; border-radius: 6px; border: 1px solid #3d3140;">
+            <strong style="color: var(--gold);">03. EARN POINTS</strong><br>Earn 10 points for every ₱150 spent, redeemable toward specialty drinks & pastries.
+          </div>
+          <div style="background: #121014; padding: 10px; border-radius: 6px; border: 1px solid #3d3140;">
+            <strong style="color: var(--gold);">04. VIP PRIVILEGES</strong><br>Enjoy 10% off all orders, priority event seating, and a Free Birthday Treat!
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- TAB 2: HOW IT WORKS -->
-        <div id="view-how" style="display: none;">
-          <div class="menu-section">
-            <h3 class="menu-title">💡 HOW YOUR GMM HOUSE LOYALTY CARD WORKS</h3>
-            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
-              Every visit to GMM House — Coffee & Pastries brings you closer to complimentary signature drinks, character roll cakes, and VIP event privileges.
-            </p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; font-size: 12px;">
-              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
-                <strong style="color: var(--gold);">01. SCAN & PRESENT</strong><br>Show your VIP card or ID (<span style="color: var(--gold);">GH-0001-A</span>) at the counter to unlock your 10% instant discount.
-              </div>
-              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
-                <strong style="color: var(--gold);">02. COLLECT STAMPS</strong><br>Earn 1 digital stamp per transaction of ₱100 or more. Collect all 10 stamps for a free reward!
-              </div>
-              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
-                <strong style="color: var(--gold);">03. EARN POINTS</strong><br>Earn 10 points for every ₱150 spent, redeemable toward specialty drinks and pastries.
-              </div>
-              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
-                <strong style="color: var(--gold);">04. VIP PRIVILEGES</strong><br>Enjoy 10% off all orders, priority event seating, and a Free Birthday Treat!
-              </div>
-            </div>
-          </div>
+    <!-- TAB 3: CAFE MENU -->
+    <div id="view-menu" style="display: none;">
+      <div class="menu-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h2 style="color: var(--gold); margin: 0; font-size: 16px;">OFFICIAL CAFE MENU</h2>
+          <span style="font-size: 10px; background: var(--purple-accent); padding: 3px 8px; border-radius: 4px; color: var(--gold-light); border: 1px solid var(--gold);">🏷️ 10% Gold Price Active</span>
         </div>
 
-        <!-- TAB 3: CAFE MENU -->
-        <div id="view-menu" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h2 style="color: var(--gold); margin: 0; font-size: 18px;">GMM HOUSE OFFICIAL MENU</h2>
-            <span style="font-size: 11px; background: var(--purple-accent); padding: 4px 8px; border-radius: 4px; color: var(--gold-light);">10% VIP Discount Applied</span>
+        <div style="max-height: 440px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 10px;">
+          
+          <!-- TEA -->
+          <div style="background: #121014; padding: 10px; border-radius: 8px; border: 1px solid #333;">
+            <h4 style="color: var(--gold); margin: 0 0 6px 0; font-size: 12px; border-bottom: 1px solid #333; padding-bottom: 4px;">🍵 TEA (₱235)</h4>
+            <div class="menu-item"><span>• Babii Peach Matcha</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
+            <div class="menu-item"><span>• Yuzu Mumu Black Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
+            <div class="menu-item"><span>• Nong Nooong Golden Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
+            <div class="menu-item"><span>• Wesley Brown Sugar Milk Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
+            <div class="menu-item"><span>• Momo Matcha Ube Fusion</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
+            <div class="menu-item"><span>• Muvmuv Coconut Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:10px;">₱235</s></span></div>
           </div>
 
-          <div style="max-height: 480px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 12px;">
-            
-            <!-- TEA -->
-            <div class="menu-section">
-              <h3 class="menu-title">🍵 TEA (₱235)</h3>
-              <div class="menu-item"><span>• Babii Peach Matcha</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
-              <div class="menu-item"><span>• Yuzu Mumu Black Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
-              <div class="menu-item"><span>• Nong Nooong Golden Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
-              <div class="menu-item"><span>• Wesley Brown Sugar Milk Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
-              <div class="menu-item"><span>• Momo Matcha Ube Fusion</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
-              <div class="menu-item"><span>• Muvmuv Coconut Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+          <!-- ROLL CAKES -->
+          <div style="background: #121014; padding: 10px; border-radius: 8px; border: 1px solid #333;">
+            <h4 style="color: var(--gold); margin: 0 0 6px 0; font-size: 12px; border-bottom: 1px solid #333; padding-bottom: 4px;">🍰 ROLL CAKES COLLECTION (₱285 each)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 11px;">
+              <div class="menu-item"><span>• King Man Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Babii Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Polcasan Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Mr. Saturnworld Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Paody Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Permpoon Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Tomafox Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Jaidee Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Avocean Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Yuzu Mumu Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Look Khunnoo Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Samruay Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Nong Nooong Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Domiia Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Wesley Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Jummo Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Guinzly Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Momo Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Ceri Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Rexxa Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Ponpon Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Muvmuv Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Lunar Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Any Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Vimmy Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Jewel Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Metaa Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Nilknhake Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Smyle Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Neona Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Lykyou Roll Cake</span> <span class="price">₱256.50</span></div>
+              <div class="menu-item"><span>• Flarey Roll Cake</span> <span class="price">₱256.50</span></div>
             </div>
-
-            <!-- ROLL CAKES -->
-            <div class="menu-section">
-              <h3 class="menu-title">🍰 ROLL CAKES COLLECTION (₱285 each)</h3>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px;">
-                <div class="menu-item"><span>• King Man Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Babii Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Polcasan Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Mr. Saturnworld Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Paody Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Permpoon Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Tomafox Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Jaidee Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Avocean Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Yuzu Mumu Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Look Khunnoo Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Samruay Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Nong Nooong Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Domiia Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Wesley Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Jummo Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Guinzly Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Momo Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Ceri Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Rexxa Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Ponpon Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Muvmuv Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Lunar Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Any Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Vimmy Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Jewel Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Metaa Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Nilknhake Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Smyle Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Neona Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Lykyou Roll Cake</span> <span class="price">₱256.50</span></div>
-                <div class="menu-item"><span>• Flarey Roll Cake</span> <span class="price">₱256.50</span></div>
-              </div>
-            </div>
-
-            <!-- MOUSSE & ICE CREAM & CROISSANTS -->
-            <div class="menu-section">
-              <h3 class="menu-title">🍰 MOUSSE CAKES & ICE CREAM</h3>
-              <div class="menu-item"><span>• Polcasan Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:11px;">₱335</s></span></div>
-              <div class="menu-item"><span>• Permpoon Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:11px;">₱335</s></span></div>
-              <div class="menu-item"><span>• Polcasan / Smyle Frozen Bar</span> <span class="price">₱157.50 <s style="color:#666; font-size:11px;">₱175</s></span></div>
-            </div>
-
-            <div class="menu-section">
-              <h3 class="menu-title">🥐 CROISSANTS</h3>
-              <div class="menu-item"><span>• Gemm House Croissant</span> <span class="price">₱72.00 <s style="color:#666; font-size:11px;">₱80</s></span></div>
-              <div class="menu-item"><span>• Ham Cheese Croissant</span> <span class="price">₱81.00 <s style="color:#666; font-size:11px;">₱90</s></span></div>
-              <div class="menu-item"><span>• Tuna Croissant</span> <span class="price">₱85.50 <s style="color:#666; font-size:11px;">₱95</s></span></div>
-              <div class="menu-item"><span>• Almond Croissant</span> <span class="price">₱76.50 <s style="color:#666; font-size:11px;">₱85</s></span></div>
-            </div>
-
-            <!-- SIGNATURE HIGHLIGHTS -->
-            <div class="menu-section">
-              <h3 class="menu-title">✨ SIGNATURE DRINKS & SPECIALTIES</h3>
-              <ul style="list-style: none; padding: 0; font-size: 12px; color: var(--text-muted); margin: 0; display: flex; flex-direction: column; gap: 6px;">
-                <li>• <strong>Matcha Cloud:</strong> Matcha latte served on a layer of Thai tea and milk pudding.</li>
-                <li>• <strong>Thai Tea Cloud:</strong> Signature layered Thai tea drink.</li>
-                <li>• <strong>Domia Smoothie:</strong> Rich malt and dark chocolate drink.</li>
-                <li>• <strong>Sparkling Sodas:</strong> King Man Mang Saturnworld Mint.</li>
-                <li>• <strong>Custom Milk Foam Prints:</strong> Character art options like Renjin and Tingting.</li>
-              </ul>
-            </div>
-
           </div>
+
+          <!-- MOUSSE & ICE CREAM & CROISSANTS -->
+          <div style="background: #121014; padding: 10px; border-radius: 8px; border: 1px solid #333;">
+            <h4 style="color: var(--gold); margin: 0 0 6px 0; font-size: 12px; border-bottom: 1px solid #333; padding-bottom: 4px;">🍰 MOUSSE & ICE CREAM & CROISSANTS</h4>
+            <div class="menu-item"><span>• Polcasan Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:10px;">₱335</s></span></div>
+            <div class="menu-item"><span>• Permpoon Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:10px;">₱335</s></span></div>
+            <div class="menu-item"><span>• Gemm House Croissant</span> <span class="price">₱72.00 <s style="color:#666; font-size:10px;">₱80</s></span></div>
+            <div class="menu-item"><span>• Ham Cheese Croissant</span> <span class="price">₱81.00 <s style="color:#666; font-size:10px;">₱90</s></span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: BARISTA MODE -->
+    <div id="view-barista" style="display: none;">
+      <div class="menu-section" style="max-width: 420px; margin: 0 auto;">
+        <h3 class="menu-title" style="text-align: center;">🔐 BARISTA & OWNER PORTAL</h3>
+        <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Enter PIN to modify stamps, member details, or terms.</p>
+
+        <div id="barista-auth-box" style="text-align: center; margin-top: 15px;">
+          <p style="font-size: 11px; color: var(--gold-light);">Enter Barista PIN (Default: <strong>1234</strong>):</p>
+          <input type="password" id="pin-input" placeholder="PIN" style="width: 120px; text-align: center; letter-spacing: 3px; font-size: 15px;">
+          <br><br>
+          <button type="button" class="action-btn" style="background: var(--gold); color: #121014; padding: 8px 16px;" onclick="verifyPin()">Unlock Controls</button>
+          <p id="pin-error" style="color: #ff5f56; font-size: 11px; display: none; margin-top: 8px;">Incorrect PIN. Try 1234.</p>
         </div>
 
-        <!-- TAB 4: BARISTA MODE -->
-        <div id="view-barista" style="display: none;">
-          <div style="max-width: 450px; margin: 0 auto;" class="menu-section">
-            <h3 class="menu-title" style="text-align: center;">🔐 BARISTA & OWNER PORTAL</h3>
-            <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Enter PIN to modify stamps, member details, or terms.</p>
+        <div id="barista-controls" style="display: none; margin-top: 15px; border-top: 1px solid #333; padding-top: 12px;">
+          <div style="background: #25252b; padding: 8px; border-radius: 6px; border-left: 4px solid #27c93f; margin-bottom: 10px; font-size: 11px;">
+            <span style="color: #27c93f; font-weight: bold;">✔ Portal Unlocked (Staff Mode)</span>
+          </div>
 
-            <div id="barista-auth-box" style="text-align: center; margin-top: 15px;">
-              <p style="font-size: 12px; color: var(--gold-light);">Enter Barista PIN (Default: <strong>1234</strong>):</p>
-              <input type="password" id="pin-input" placeholder="PIN" style="width: 130px; text-align: center; letter-spacing: 3px; font-size: 16px;">
-              <br><br>
-              <button type="button" class="btn-gold" onclick="verifyPin()">Unlock Controls</button>
-              <p id="pin-error" style="color: #ff5f56; font-size: 11px; display: none; margin-top: 8px;">Incorrect PIN. Try 1234.</p>
-            </div>
+          <div style="margin-bottom: 8px;">
+            <label style="font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px;">Edit Member Name:</label>
+            <input type="text" id="edit-name" value="ELVIRA JOY JAEN" style="width: 100%; font-size: 12px;">
+          </div>
 
-            <div id="barista-controls" style="display: none; margin-top: 15px; border-top: 1px solid #333; padding-top: 12px;">
-              <div style="background: #25252b; padding: 10px; border-radius: 6px; border-left: 4px solid #27c93f; margin-bottom: 12px;">
-                <span style="color: #27c93f; font-weight: bold; font-size: 12px;">✔ Portal Unlocked</span>
-              </div>
+          <div style="margin-bottom: 8px;">
+            <label style="font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px;">Edit Membership No:</label>
+            <input type="text" id="edit-id" value="GH-0001-A" style="width: 100%; font-size: 12px;">
+          </div>
 
-              <div style="margin-bottom: 10px;">
-                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Member Name:</label>
-                <input type="text" id="edit-name" value="ELVIRA JOY JAEN" style="width: 100%;">
-              </div>
-
-              <div style="margin-bottom: 10px;">
-                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Membership No:</label>
-                <input type="text" id="edit-id" value="GH-0001-A" style="width: 100%;">
-              </div>
-
-              <div style="margin-bottom: 12px;">
-                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Terms & Conditions:</label>
-                <textarea id="edit-terms" rows="3" style="width: 100%; font-size: 10px;">1. Present this card upon purchase to earn stamps and benefits.
-2. One stamp per transaction of ₱100 or more.
+          <div style="margin-bottom: 10px;">
+            <label style="font-size: 10px; color: var(--gold); display: block; margin-bottom: 2px;">Edit Terms & Conditions:</label>
+            <textarea id="edit-terms" rows="3" style="width: 100%; font-size: 9px;">1. Present this card upon purchase to earn stamps and benefits.
+2. One stamp per transaction of 100 or more.
 3. Stamps and rewards are non-transferable and have no cash value.
 4. GMM House reserves the right to amend terms without prior notice.
-For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 GMM HOUSE.</textarea>
-              </div>
+For inquiries, visit gmmhouse.com or follow @GMMHouse on social media.
+© 2024 GMM HOUSE. ALL RIGHTS RESERVED</textarea>
+          </div>
 
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn-gold" style="flex: 1;" onclick="saveCardEdits()">Save Changes</button>
-                <button type="button" onclick="lockBarista()" style="background: #333; color: #aaa; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 11px;">Lock</button>
-              </div>
-            </div>
-
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="action-btn" style="flex: 1; background: var(--gold); color: #121014; font-weight: bold;" onclick="saveCardEdits()">Save Changes</button>
+            <button type="button" class="action-btn" style="background: #333;" onclick="lockBarista()">Lock</button>
           </div>
         </div>
 
       </div>
     </div>
+
   </div>
 
   <script>
@@ -541,15 +598,34 @@ For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 G
       if (cardInner) {
         cardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
       }
+      // Update sub-toggle buttons to match face
+      const btnFront = document.getElementById('btn-front');
+      const btnBack = document.getElementById('btn-back');
+      if (btnFront && btnBack) {
+        btnFront.classList.toggle('active', !isFlipped);
+        btnBack.classList.toggle('active', isFlipped);
+      }
+    }
+
+    function setCardFace(face) {
+      if ((face === 'front' && isFlipped) || (face === 'back' && !isFlipped)) {
+        flipCard();
+      }
     }
 
     function switchTab(tabName) {
       ['card', 'how', 'menu', 'barista'].forEach(tab => {
         const view = document.getElementById('view-' + tab);
-        const btn = document.getElementById('tab-' + tab);
+        const btn = document.getElementById('tab-btn-' + tab);
         if (view) view.style.display = (tab === tabName) ? 'block' : 'none';
         if (btn) btn.classList.toggle('active', tab === tabName);
       });
+    }
+
+    function triggerPOSScan() {
+      switchTab('card');
+      setCardFace('back');
+      alert('📱 POS Scanner Mode Active: Displaying high-contrast Barcode & QR code for cashier scanning.');
     }
 
     function toggleStamp(index) {
@@ -557,10 +633,10 @@ For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 G
       const slot = slots[index];
       if (!slot) return;
       
-      const isStamped = slot.style.background === 'rgb(255, 255, 255)' || slot.style.background === '#fff' || slot.style.background === 'rgb(255, 215, 0)' || slot.classList.contains('reward');
+      const isStamped = slot.style.background === 'rgb(244, 237, 211)' || slot.style.background === '#f4edd3' || slot.style.background === 'rgb(255, 215, 0)' || slot.classList.contains('reward');
       
       if (isStamped) {
-        slot.style.background = '#2b2518';
+        slot.style.background = '#252018';
         slot.style.color = 'var(--gold)';
         slot.style.border = '2px dashed var(--gold)';
         slot.style.boxShadow = 'none';
@@ -568,16 +644,16 @@ For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 G
         slot.classList.add('empty');
         stampsCount = Math.max(0, stampsCount - 1);
       } else {
-        slot.style.background = index === 9 ? '#ffd700' : '#fff';
-        slot.style.color = '#121214';
+        slot.style.background = index === 9 ? '#ffd700' : '#f4edd3';
+        slot.style.color = '#121014';
         slot.style.border = index === 9 ? '2px solid #fff' : '2px solid var(--gold)';
-        slot.style.boxShadow = index === 9 ? '0 0 10px #ffd700' : 'inset 0 2px 4px rgba(0,0,0,0.3)';
+        slot.style.boxShadow = index === 9 ? '0 0 8px #ffd700' : 'inset 0 2px 4px rgba(0,0,0,0.2)';
         slot.innerHTML = index === 9 ? '★' : ['☕', '🎸', '💿', '4', '5', '6', '7', '8', '9'][index] || (index + 1);
         slot.classList.remove('empty');
         stampsCount = Math.min(10, stampsCount + 1);
       }
       const counterText = document.getElementById('stamp-counter-text');
-      if (counterText) counterText.innerText = `Stamps: ${stampsCount} / 10`;
+      if (counterText) counterText.innerText = `${stampsCount} / 10 STAMPS COLLECTED`;
     }
 
     function verifyPin() {
