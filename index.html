@@ -1,344 +1,627 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMM HOUSE — Coffee & Pastries | VIP Membership & Menu</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cinzel for luxury serif branding, Inter for UI, JetBrains Mono for codes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-    <!-- QRCode.js for real scannable QR generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Canvas Confetti for 10/10 Reward Celebration -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GMM House - Coffee & Pastries | VIP Membership Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0c0c0e;
+      --card-bg: linear-gradient(135deg, #121214 0%, #1f1b14 100%);
+      --card-back-bg: linear-gradient(135deg, #181518 0%, #121214 100%);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --purple-accent: #3b183b;
+      --text-main: #f3e5ab;
+      --text-muted: #aaa;
+    }
 
-    <style>
-        :root {
-            --bg-obsidian: #0B0B0D;
-            --gold-antique: #D9A05B;
-            --gold-warm: #E8B878;
-            --gold-champagne: #EED69C;
-            --ivory-medallion: #F5F2EB;
-            --plum-strip: #3D1B35;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cinzel', 'Playfair Display', serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #09080A;
-            color: #F4F4F5;
-            -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
-        }
+    .app-container {
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 15px;
+      box-sizing: border-box;
+    }
 
-        /* Cozy Warm Cafe Ambient Background */
-        .cafe-ambient-bg {
-            background:
-                radial-gradient(circle at 18% 12%, rgba(217, 160, 91, 0.14) 0%, transparent 45%),
-                radial-gradient(circle at 85% 18%, rgba(61, 27, 53, 0.5) 0%, transparent 52%),
-                radial-gradient(circle at 50% 92%, rgba(120, 68, 28, 0.2) 0%, transparent 55%),
-                linear-gradient(180deg, #110E0D 0%, #09080A 100%);
-        }
+    .browser-frame {
+      background: #1a1a1f;
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+    }
 
-        .font-serif-luxury {
-            font-family: 'Cinzel', serif;
-        }
+    .browser-header {
+      background: #25252b;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
 
-        .font-mono-code {
-            font-family: 'JetBrains Mono', monospace;
-        }
+    .window-dots {
+      display: flex;
+      gap: 8px;
+      margin-right: 15px;
+    }
 
-        /* Antique Brushed Gold / Rose-Gold Foil Gradients (Matching Reference Images) */
-        .text-gold-metallic {
-            background: linear-gradient(135deg, #F6DFB0 0%, #E8B878 46%, #C48942 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
 
-        .bg-gold-metallic {
-            background: linear-gradient(135deg, #F3D5A5 0%, #E2AD67 50%, #C2863E 100%);
-        }
+    .url-bar {
+      flex: 1;
+      background: #121214;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--gold);
+      border: 1px solid #443c1d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-        .bg-champagne-banner {
-            background: linear-gradient(180deg, #F3DFAD 0%, #EAD090 100%);
-        }
+    .nav-tabs {
+      display: flex;
+      background: #161619;
+      border-bottom: 1px solid #332d12;
+      overflow-x: auto;
+    }
 
-        /* Obsidian Matte Black Card Surface */
-        .card-brushed-surface {
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.01) 0px,
-                    rgba(255, 255, 255, 0.01) 1px,
-                    transparent 1px,
-                    transparent 3px
-                ),
-                radial-gradient(circle at 80% 18%, rgba(217, 160, 91, 0.08) 0%, transparent 48%),
-                linear-gradient(160deg, #121215 0%, #0B0B0D 60%, #100D11 100%);
-            box-shadow:
-                0 28px 60px -15px rgba(0, 0, 0, 0.92),
-                0 0 0 1px rgba(217, 160, 91, 0.35),
-                inset 0 1px 0 rgba(246, 223, 176, 0.2);
-        }
+    .nav-tab {
+      flex: 1;
+      padding: 12px 10px;
+      background: #161619;
+      color: #888;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
 
-        /* Cream / Ivory Medallion Token with Subtle Inner Depth */
-        .ivory-medallion {
-            background: radial-gradient(circle at 32% 28%, #FFFFFF 0%, #F5F2EB 65%, #E3DDD0 100%);
-            box-shadow:
-                0 4px 10px rgba(0, 0, 0, 0.55),
-                inset 0 2px 3px rgba(255, 255, 255, 0.9),
-                inset 0 -2px 4px rgba(168, 152, 124, 0.45);
-        }
+    .nav-tab.active {
+      background: #222018;
+      color: var(--gold);
+      border-bottom: 3px solid var(--gold);
+    }
 
-        /* 3D Flippable Card Container */
-        .perspective-stage {
-            perspective: 1600px;
-        }
+    .content-area {
+      padding: 20px;
+    }
 
-        .flip-card-inner {
-            display: grid;
-            grid-template-columns: 1fr;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.34, 1.32, 0.64, 1);
-        }
+    /* 3D Card Styles */
+    .card-perspective {
+      perspective: 1000px;
+      max-width: 600px;
+      height: 350px;
+      margin: 20px auto;
+      cursor: pointer;
+    }
 
-        .flip-card-inner.is-flipped {
-            transform: rotateY(180deg);
-        }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      border-radius: 16px;
+    }
 
-        .flip-face {
-            grid-area: 1 / 1;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-        }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 22px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        .flip-face-back {
-            transform: rotateY(180deg);
-        }
+    .card-front {
+      background: var(--card-bg);
+    }
 
-        /* Stamp Token Interactive Animations */
-        .stamp-token {
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
-        }
+    .card-back {
+      background: var(--card-back-bg);
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
 
-        .stamp-token:active {
-            transform: scale(0.9);
-        }
+    .stamp-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+    }
 
-        @keyframes stampBounce {
-            0% { transform: scale(0.55) rotate(-14deg); }
-            65% { transform: scale(1.14) rotate(4deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
+    .stamp-slot {
+      background: #fff;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #121214;
+      font-size: 14px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+      border: 2px solid var(--gold);
+      cursor: pointer;
+      user-select: none;
+    }
 
-        .stamp-animate {
-            animation: stampBounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+    .stamp-slot.empty {
+      background: #2b2518;
+      color: var(--gold);
+      border: 2px dashed var(--gold);
+      box-shadow: none;
+    }
 
-        @keyframes starPulse {
-            0%, 100% { filter: drop-shadow(0 0 6px rgba(217, 160, 91, 0.7)); transform: scale(1); }
-            50% { filter: drop-shadow(0 0 16px rgba(232, 184, 120, 1)); transform: scale(1.08); }
-        }
+    .stamp-slot.reward {
+      background: #ffd700;
+      color: #121214;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px #ffd700;
+    }
 
-        .star-glow-active {
-            animation: starPulse 1.8s infinite ease-in-out;
-        }
+    .menu-section {
+      background: #161619;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      margin-bottom: 15px;
+    }
 
-        /* QR Code Custom Styling inside Plum Strip */
-        #cardBackQrBox img, #cardBackQrBox canvas {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-            border-radius: 4px;
-        }
+    .menu-title {
+      color: var(--gold);
+      border-bottom: 1px solid #443c1d;
+      padding-bottom: 6px;
+      margin-top: 0;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
 
-        #posModalQrBox img, #posModalQrBox canvas {
-            width: 176px !important;
-            height: 176px !important;
-            display: block;
-        }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 13px;
+    }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
+    .price {
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #121214;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .btn-gold:hover {
+      background: #fff;
+    }
+
+    input, textarea {
+      background: #121214;
+      border: 1px solid var(--gold);
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      font-family: 'Cinzel', serif;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
-<body class="min-h-screen cafe-ambient-bg flex flex-col items-center justify-start py-4 px-3 sm:px-6 selection:bg-amber-500/30 selection:text-amber-100">
+<body>
+  <div class="app-container">
+    <div class="browser-frame">
+      <!-- Browser Top bar -->
+      <div class="browser-header">
+        <div class="window-dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <div class="url-bar">
+          <span>🔒 https://gmmhouse.com/member/GH-0001-A</span>
+          <span style="font-size: 10px; background: var(--purple-accent); padding: 2px 6px; border-radius: 3px; color: var(--gold-light);">VIP PORTAL</span>
+        </div>
+      </div>
 
-    <!-- ========================================================================= -->
-    <!-- TOP BRAND & ROLE STATUS BAR                                               -->
-    <!-- ========================================================================= -->
-    <header class="w-full max-w-2xl flex flex-wrap items-center justify-between gap-2 mb-3 px-1">
-        <!-- Brand Identity & Live QR Verification -->
-        <div class="flex items-center gap-2 bg-zinc-950/90 border border-amber-500/25 px-3 py-1.5 rounded-full backdrop-blur-md">
-            <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span class="font-serif-luxury text-[11px] font-bold tracking-wider uppercase text-amber-200">GMM HOUSE</span>
-            <span id="roleBadge" class="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-300 border border-zinc-700">
-                Read-Only
-            </span>
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <button type="button" id="tab-card" class="nav-tab active" onclick="switchTab('card')">🪪 Membership Card</button>
+        <button type="button" id="tab-how" class="nav-tab" onclick="switchTab('how')">💡 How It Works</button>
+        <button type="button" id="tab-menu" class="nav-tab" onclick="switchTab('menu')">☕ Cafe Menu</button>
+        <button type="button" id="tab-barista" class="nav-tab" onclick="switchTab('barista')">🔐 Barista Mode</button>
+      </div>
+
+      <div class="content-area">
+        
+        <!-- TAB 1: MEMBERSHIP CARD -->
+        <div id="view-card" style="display: block;">
+          <div style="text-align: center; margin-bottom: 10px;">
+            <h2 style="color: var(--gold); margin: 0 0 4px 0; font-size: 18px;">GMM HOUSE VIP PASS</h2>
+            <p style="color: var(--text-muted); font-size: 12px; margin: 0;">Tap card to flip between Front & Stamp Pass Back</p>
+          </div>
+
+          <div class="card-perspective" onclick="flipCard()">
+            <div id="card-inner" class="card-inner">
+              
+              <!-- CARD FRONT -->
+              <div class="card-front">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <div>
+                    <h1 style="color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 2px;">G 📶 U</h1>
+                    <div style="font-size: 13px; color: var(--gold-light); letter-spacing: 3px; font-weight: bold;">HOUSE</div>
+                    <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">GMM HOUSE - COFFEE & PASTRIES • EST. 2024</div>
+                  </div>
+                  <div style="text-align: right; font-size: 10px; color: var(--gold); background: var(--purple-accent); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--gold);">
+                    🎵 GOLD VIP
+                  </div>
+                </div>
+
+                <div style="background: rgba(212, 175, 55, 0.08); padding: 10px 14px; border-radius: 8px; border-left: 4px solid var(--gold);">
+                  <div style="font-size: 10px; color: var(--text-muted);">MEMBER NAME:</div>
+                  <div id="display-name" style="font-size: 16px; color: #fff; font-weight: bold; letter-spacing: 1px;">ELVIRA JOY JAEN</div>
+                  <div style="display: flex; justify-content: space-between; margin-top: 6px;">
+                    <div>
+                      <span style="font-size: 9px; color: var(--text-muted);">MEMBERSHIP NO:</span><br>
+                      <span id="display-id" style="font-size: 12px; color: var(--gold); font-weight: bold;">GH-0001-A</span>
+                    </div>
+                    <div style="text-align: right;">
+                      <span style="font-size: 9px; color: var(--text-muted);">STATUS:</span><br>
+                      <span style="font-size: 11px; color: var(--gold-light); font-weight: bold;">GOLD (PLATINUM STATUS)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: var(--gold); color: #121214; padding: 8px 12px; border-radius: 8px;">
+                  <div style="font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px;">👑 VIP BENEFITS:</div>
+                  <div style="font-size: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-weight: 600;">
+                    <div>• 10% OFF Drinks & Pastries</div>
+                    <div>• Priority Seating & RSVP</div>
+                    <div>• Earn Points: 10 PTS / ₱150</div>
+                    <div>• Free Birthday Treat</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARD BACK -->
+              <div class="card-back">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 6px;">
+                  <span style="color: var(--gold); font-size: 12px; font-weight: bold; letter-spacing: 1px;">STAMP PASS (10 SLOTS)</span>
+                  <span style="color: var(--text-muted); font-size: 10px;" id="stamp-counter-text">Stamps: 3 / 10</span>
+                </div>
+
+                <div class="stamp-grid">
+                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(0)">☕</div>
+                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(1)">🎸</div>
+                  <div class="stamp-slot" onclick="event.stopPropagation(); toggleStamp(2)">💿</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(3)">4</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(4)">5</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(5)">6</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(6)">7</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(7)">8</div>
+                  <div class="stamp-slot empty" onclick="event.stopPropagation(); toggleStamp(8)">9</div>
+                  <div class="stamp-slot reward" onclick="event.stopPropagation(); toggleStamp(9)">★</div>
+                </div>
+
+                <div id="terms-display-box" style="background: rgba(0,0,0,0.4); padding: 6px 10px; border-radius: 6px; font-size: 9px; color: #ccc; border: 1px solid #333; max-height: 70px; overflow-y: auto;">
+                  <strong style="color: var(--gold);">TERMS & CONDITIONS:</strong><br>
+                  1. Present this card upon purchase to earn stamps and benefits.<br>
+                  2. One stamp per transaction of ₱100 or more.<br>
+                  3. Stamps and rewards are non-transferable and have no cash value.<br>
+                  4. GMM House reserves the right to amend terms without prior notice.<br>
+                  For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 GMM HOUSE.
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 10px;">
+            <button type="button" class="btn-gold" onclick="flipCard()">🔄 Flip Card (Front / Back)</button>
+          </div>
         </div>
 
-        <!-- Right Controls: POS Fullscreen Pass & Barista / Owner Mode -->
-        <div class="flex items-center gap-2">
-            <button id="openPosModalBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-amber-500/35 text-amber-200 text-xs font-semibold transition active:scale-95">
-                <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2M7 12h10"/>
-                </svg>
-                <span>POS Scan</span>
-            </button>
-
-            <button id="staffToggleBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#3D1B35] hover:bg-[#512447] border border-amber-400/50 text-amber-100 text-xs font-bold tracking-wide shadow-lg transition active:scale-95">
-                <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                </svg>
-                <span id="staffBtnLabel">Barista / Owner Mode</span>
-            </button>
+        <!-- TAB 2: HOW IT WORKS -->
+        <div id="view-how" style="display: none;">
+          <div class="menu-section">
+            <h3 class="menu-title">💡 HOW YOUR GMM HOUSE LOYALTY CARD WORKS</h3>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+              Every visit to GMM House — Coffee & Pastries brings you closer to complimentary signature drinks, character roll cakes, and VIP event privileges.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; font-size: 12px;">
+              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+                <strong style="color: var(--gold);">01. SCAN & PRESENT</strong><br>Show your VIP card or ID (<span style="color: var(--gold);">GH-0001-A</span>) at the counter to unlock your 10% instant discount.
+              </div>
+              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+                <strong style="color: var(--gold);">02. COLLECT STAMPS</strong><br>Earn 1 digital stamp per transaction of ₱100 or more. Collect all 10 stamps for a free reward!
+              </div>
+              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+                <strong style="color: var(--gold);">03. EARN POINTS</strong><br>Earn 10 points for every ₱150 spent, redeemable toward specialty drinks and pastries.
+              </div>
+              <div style="background: #121214; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+                <strong style="color: var(--gold);">04. VIP PRIVILEGES</strong><br>Enjoy 10% off all orders, priority event seating, and a Free Birthday Treat!
+              </div>
+            </div>
+          </div>
         </div>
-    </header>
 
-    <!-- ========================================================================= -->
-    <!-- PRIMARY NAVIGATION TABS: Membership Card | How It Works | Cafe Menu       -->
-    <!-- ========================================================================= -->
-    <nav class="w-full max-w-2xl mb-4 px-1" aria-label="Primary Sections">
-        <div class="grid grid-cols-3 gap-1.5 p-1.5 rounded-2xl bg-zinc-950/90 border border-amber-500/25 backdrop-blur-md shadow-xl">
-            <button id="navTabCard" type="button" data-tab="card" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition flex items-center justify-center gap-1.5 bg-gold-metallic text-zinc-950 shadow">
-                <span>💳</span>
-                <span>Membership Card</span>
-            </button>
-            <button id="navTabGuide" type="button" data-tab="guide" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-1.5 text-zinc-300 hover:text-amber-200">
-                <span>✨</span>
-                <span>How It Works</span>
-            </button>
-            <button id="navTabMenu" type="button" data-tab="menu" class="nav-tab-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-1.5 text-zinc-300 hover:text-amber-200">
-                <span>🍰</span>
-                <span>Cafe Menu</span>
-            </button>
-        </div>
-    </nav>
+        <!-- TAB 3: CAFE MENU -->
+        <div id="view-menu" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h2 style="color: var(--gold); margin: 0; font-size: 18px;">GMM HOUSE OFFICIAL MENU</h2>
+            <span style="font-size: 11px; background: var(--purple-accent); padding: 4px 8px; border-radius: 4px; color: var(--gold-light);">10% VIP Discount Applied</span>
+          </div>
 
-    <!-- ========================================================================= -->
-    <!-- TAB 1: MEMBERSHIP CARD VIEW (MODELED AFTER REFERENCE IMAGES 5 & 6)        -->
-    <!-- ========================================================================= -->
-    <div id="sectionCard" class="w-full max-w-xl flex flex-col items-center">
-        <!-- Flip Controls Row -->
-        <div class="w-full flex items-center justify-between gap-2 mb-3 px-1">
-            <div class="inline-flex rounded-xl bg-zinc-950/90 p-1 border border-amber-500/20">
-                <button id="showFrontBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-bold tracking-wide transition bg-gold-metallic text-zinc-950 shadow">
-                    Card Front
-                </button>
-                <button id="showBackBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition text-zinc-300 hover:text-amber-200">
-                    Card Back (Stamps)
-                </button>
+          <div style="max-height: 480px; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 12px;">
+            
+            <!-- TEA -->
+            <div class="menu-section">
+              <h3 class="menu-title">🍵 TEA (₱235)</h3>
+              <div class="menu-item"><span>• Babii Peach Matcha</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+              <div class="menu-item"><span>• Yuzu Mumu Black Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+              <div class="menu-item"><span>• Nong Nooong Golden Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+              <div class="menu-item"><span>• Wesley Brown Sugar Milk Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+              <div class="menu-item"><span>• Momo Matcha Ube Fusion</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
+              <div class="menu-item"><span>• Muvmuv Coconut Thai Tea</span> <span class="price">₱211.50 <s style="color:#666; font-size:11px;">₱235</s></span></div>
             </div>
 
-            <button id="flipTriggerBtn" type="button" class="flex items-center gap-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 px-3 py-1.5 rounded-xl bg-zinc-950/85 border border-amber-500/25 transition active:scale-95">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                <span>Flip Card</span>
-            </button>
+            <!-- ROLL CAKES -->
+            <div class="menu-section">
+              <h3 class="menu-title">🍰 ROLL CAKES COLLECTION (₱285 each)</h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px;">
+                <div class="menu-item"><span>• King Man Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Babii Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Polcasan Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Mr. Saturnworld Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Paody Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Permpoon Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Tomafox Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Jaidee Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Avocean Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Yuzu Mumu Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Look Khunnoo Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Samruay Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Nong Nooong Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Domiia Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Wesley Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Jummo Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Guinzly Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Momo Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Ceri Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Rexxa Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Ponpon Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Muvmuv Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Lunar Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Any Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Vimmy Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Jewel Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Metaa Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Nilknhake Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Smyle Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Neona Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Lykyou Roll Cake</span> <span class="price">₱256.50</span></div>
+                <div class="menu-item"><span>• Flarey Roll Cake</span> <span class="price">₱256.50</span></div>
+              </div>
+            </div>
+
+            <!-- MOUSSE & ICE CREAM & CROISSANTS -->
+            <div class="menu-section">
+              <h3 class="menu-title">🍰 MOUSSE CAKES & ICE CREAM</h3>
+              <div class="menu-item"><span>• Polcasan Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:11px;">₱335</s></span></div>
+              <div class="menu-item"><span>• Permpoon Mousse Cake</span> <span class="price">₱301.50 <s style="color:#666; font-size:11px;">₱335</s></span></div>
+              <div class="menu-item"><span>• Polcasan / Smyle Frozen Bar</span> <span class="price">₱157.50 <s style="color:#666; font-size:11px;">₱175</s></span></div>
+            </div>
+
+            <div class="menu-section">
+              <h3 class="menu-title">🥐 CROISSANTS</h3>
+              <div class="menu-item"><span>• Gemm House Croissant</span> <span class="price">₱72.00 <s style="color:#666; font-size:11px;">₱80</s></span></div>
+              <div class="menu-item"><span>• Ham Cheese Croissant</span> <span class="price">₱81.00 <s style="color:#666; font-size:11px;">₱90</s></span></div>
+              <div class="menu-item"><span>• Tuna Croissant</span> <span class="price">₱85.50 <s style="color:#666; font-size:11px;">₱95</s></span></div>
+              <div class="menu-item"><span>• Almond Croissant</span> <span class="price">₱76.50 <s style="color:#666; font-size:11px;">₱85</s></span></div>
+            </div>
+
+            <!-- SIGNATURE HIGHLIGHTS -->
+            <div class="menu-section">
+              <h3 class="menu-title">✨ SIGNATURE DRINKS & SPECIALTIES</h3>
+              <ul style="list-style: none; padding: 0; font-size: 12px; color: var(--text-muted); margin: 0; display: flex; flex-direction: column; gap: 6px;">
+                <li>• <strong>Matcha Cloud:</strong> Matcha latte served on a layer of Thai tea and milk pudding.</li>
+                <li>• <strong>Thai Tea Cloud:</strong> Signature layered Thai tea drink.</li>
+                <li>• <strong>Domia Smoothie:</strong> Rich malt and dark chocolate drink.</li>
+                <li>• <strong>Sparkling Sodas:</strong> King Man Mang Saturnworld Mint.</li>
+                <li>• <strong>Custom Milk Foam Prints:</strong> Character art options like Renjin and Tingting.</li>
+              </ul>
+            </div>
+
+          </div>
         </div>
 
-        <!-- 3D FLIPPABLE VIP MEMBERSHIP CARD -->
-        <main class="w-full perspective-stage">
-            <div id="flipCardInner" class="flip-card-inner">
+        <!-- TAB 4: BARISTA MODE -->
+        <div id="view-barista" style="display: none;">
+          <div style="max-width: 450px; margin: 0 auto;" class="menu-section">
+            <h3 class="menu-title" style="text-align: center;">🔐 BARISTA & OWNER PORTAL</h3>
+            <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Enter PIN to modify stamps, member details, or terms.</p>
 
-                <!-- ============================================================= -->
-                <!-- CARD FRONT (MATCHING REFERENCE IMAGE 5)                       -->
-                <!-- ============================================================= -->
-                <section class="flip-face card-brushed-surface rounded-3xl overflow-hidden relative flex flex-col justify-between">
-                    <!-- Upper Right Treble Clef & Soundwave Watermark -->
-                    <div class="pointer-events-none absolute top-2 right-2 w-56 h-28 opacity-[0.14]" aria-hidden="true">
-                        <svg class="w-full h-full" viewBox="0 0 240 120" fill="none">
-                            <g fill="#D9A05B">
-                                <rect x="12" y="52" width="2.5" height="16" rx="1.2"/>
-                                <rect x="19" y="45" width="2.5" height="30" rx="1.2"/>
-                                <rect x="26" y="36" width="2.5" height="48" rx="1.2"/>
-                                <rect x="33" y="44" width="2.5" height="32" rx="1.2"/>
-                                <rect x="40" y="30" width="2.5" height="60" rx="1.2"/>
-                                <rect x="47" y="48" width="2.5" height="24" rx="1.2"/>
-                                <rect x="96" y="42" width="2.5" height="36" rx="1.2"/>
-                                <rect x="103" y="28" width="2.5" height="64" rx="1.2"/>
-                                <rect x="110" y="18" width="2.5" height="84" rx="1.2"/>
-                                <rect x="117" y="34" width="2.5" height="52" rx="1.2"/>
-                                <rect x="124" y="22" width="2.5" height="76" rx="1.2"/>
-                                <rect x="131" y="38" width="2.5" height="44" rx="1.2"/>
-                                <rect x="138" y="46" width="2.5" height="28" rx="1.2"/>
-                                <rect x="145" y="52" width="2.5" height="16" rx="1.2"/>
-                            </g>
-                            <path d="M72 22 C84 22, 88 38, 76 50 C62 63, 50 76, 64 94 C73 106, 88 96, 82 84 C76 75, 64 81, 69 91 M73 14 L68 112 C67 120, 57 122, 55 115" stroke="#E8B878" stroke-width="3.2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
+            <div id="barista-auth-box" style="text-align: center; margin-top: 15px;">
+              <p style="font-size: 12px; color: var(--gold-light);">Enter Barista PIN (Default: <strong>1234</strong>):</p>
+              <input type="password" id="pin-input" placeholder="PIN" style="width: 130px; text-align: center; letter-spacing: 3px; font-size: 16px;">
+              <br><br>
+              <button type="button" class="btn-gold" onclick="verifyPin()">Unlock Controls</button>
+              <p id="pin-error" style="color: #ff5f56; font-size: 11px; display: none; margin-top: 8px;">Incorrect PIN. Try 1234.</p>
+            </div>
 
-                    <!-- Bottom Right Thai/Kanok Metallic Floral Filigree Watermark -->
-                    <div class="pointer-events-none absolute bottom-16 right-2 w-32 h-32 opacity-30" aria-hidden="true">
-                        <svg class="w-full h-full" viewBox="0 0 140 140" fill="none">
-                            <defs>
-                                <linearGradient id="kanokFrontGold" x1="0" y1="0" x2="140" y2="140" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#E8B878"/>
-                                    <stop offset="100%" stop-color="#7A5226"/>
-                                </linearGradient>
-                            </defs>
-                            <path d="M125 130 C95 130, 72 114, 65 88 C58 64, 72 42, 92 26 C88 46, 94 60, 108 66 C98 48, 104 28, 122 14 C116 36, 122 52, 134 62 L134 130 Z" fill="url(#kanokFrontGold)"/>
-                            <path d="M88 132 C64 128, 46 112, 42 90 C38 72, 48 56, 62 46 C58 62, 64 74, 76 80 C66 92, 72 112, 88 132 Z" fill="url(#kanokFrontGold)" opacity="0.75"/>
-                            <path d="M56 132 C38 126, 26 114, 24 98 C22 86, 30 76, 40 70 C36 82, 40 94, 56 132 Z" fill="url(#kanokFrontGold)" opacity="0.5"/>
-                        </svg>
-                    </div>
+            <div id="barista-controls" style="display: none; margin-top: 15px; border-top: 1px solid #333; padding-top: 12px;">
+              <div style="background: #25252b; padding: 10px; border-radius: 6px; border-left: 4px solid #27c93f; margin-bottom: 12px;">
+                <span style="color: #27c93f; font-weight: bold; font-size: 12px;">✔ Portal Unlocked</span>
+              </div>
 
-                    <!-- Main Front Content -->
-                    <div class="relative z-10 px-5 sm:px-7 pt-5 pb-4 flex flex-col justify-between">
-                        <!-- Live Points Pill in Top Left -->
-                        <div class="flex items-center justify-between">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3D1B35]/90 border border-amber-400/40 shadow">
-                                <span class="text-[9.5px] uppercase tracking-wider text-amber-200/80 font-semibold">Points:</span>
-                                <span id="frontPointsDisplay" class="font-mono-code text-xs font-extrabold text-amber-200">150 PTS</span>
-                            </div>
-                            <span class="text-[9px] font-mono-code tracking-widest uppercase text-amber-300/65">VIP CARD</span>
-                        </div>
+              <div style="margin-bottom: 10px;">
+                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Member Name:</label>
+                <input type="text" id="edit-name" value="ELVIRA JOY JAEN" style="width: 100%;">
+              </div>
 
-                        <!-- Top Center Emblem: G [Soundwave] H (Coffee Cup with Steam & Saucer) HOUSE -->
-                        <div class="flex flex-col items-center text-center mt-1">
-                            <div class="flex items-center justify-center gap-1">
-                                <span class="font-serif-luxury text-4xl sm:text-5xl font-extrabold text-gold-metallic leading-none">G</span>
-                                <svg class="w-9 h-9 sm:w-10 sm:h-10 text-[#E8B878]" viewBox="0 0 36 32" fill="currentColor">
-                                    <rect x="2" y="13" width="2.2" height="6" rx="1.1"/>
-                                    <rect x="6" y="9" width="2.2" height="14" rx="1.1"/>
-                                    <rect x="10" y="5" width="2.2" height="22" rx="1.1"/>
-                                    <rect x="14" y="11" width="2.2" height="10" rx="1.1"/>
-                                    <rect x="18" y="3" width="2.2" height="26" rx="1.1"/>
-                                    <rect x="22" y="8" width="2.2" height="16" rx="1.1"/>
-                                    <rect x="26" y="4" width="2.2" height="24" rx="1.1"/>
-                                    <rect x="30" y="10" width="2.2" height="12" rx="1.1"/>
-                                </svg>
-                                <!-- H shaped Coffee Cup with Steam & Saucer -->
-                                <svg class="w-11 h-11 sm:w-12 sm:h-12 -ml-1" viewBox="0 0 46 42" fill="none">
-                                    <defs>
-                                        <linearGradient id="frontCupGold" x1="0" y1="0" x2="46" y2="42" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="#F6DFB0"/>
-                                            <stop offset="50%" stop-color="#E8B878"/>
-                                            <stop offset="100%" stop-color="#C48942"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <!-- Rising Steam -->
-                                    <path d="M21 11C21 8.5 23.5 7.5 23.5 5C23.5 3.5 22 2.5 22 2.5M26 12C26 9.5 28.5 8.5 28.5 6" stroke="url(#frontCupGold)" stroke-width="2" stroke-linecap="round"/>
-                                    <!-- Cup Body forming H -->
-                                    <path d="M11 14H32V23C32 28.5228 27.5228 33 22 33H21C15.4772 33 11 28.5228 11 23V14Z" fill="url(#frontCupGold)"/>
-                                    <!-- Wave Cutout across Cup -->
-                                    <path d="M10 21C14 19 18 23 22 21C26 19 29 22 33 20" stroke="#0B0B0D" stroke-width="2.2" stroke-linecap="round"/>
-                                    <!-- Cup Handle -->
-                                    <path d="M32 17H36C38.2091 17 40 18.7909 40 21C40 23.2091 38.2091 25 36 25H32" stroke="url(#frontCupGold)" stroke-width="2.8" stroke-linecap="round"/>
-                                    <!-- Curved Saucer -->
-                                    <path d="M8 34C12 37.5 31 37.5 35 34" stroke="url(#frontCupGold)" stroke-width="2.4" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <p class="font-serif-luxury text-sm sm:tex
+              <div style="margin-bottom: 10px;">
+                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Membership No:</label>
+                <input type="text" id="edit-id" value="GH-0001-A" style="width: 100%;">
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px;">Edit Terms & Conditions:</label>
+                <textarea id="edit-terms" rows="3" style="width: 100%; font-size: 10px;">1. Present this card upon purchase to earn stamps and benefits.
+2. One stamp per transaction of ₱100 or more.
+3. Stamps and rewards are non-transferable and have no cash value.
+4. GMM House reserves the right to amend terms without prior notice.
+For inquiries, visit gmmhouse.com or follow @GMMHouse on social media. © 2024 GMM HOUSE.</textarea>
+              </div>
+
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-gold" style="flex: 1;" onclick="saveCardEdits()">Save Changes</button>
+                <button type="button" onclick="lockBarista()" style="background: #333; color: #aaa; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 11px;">Lock</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isFlipped = false;
+    let stampsCount = 3;
+
+    function flipCard() {
+      isFlipped = !isFlipped;
+      const cardInner = document.getElementById('card-inner');
+      if (cardInner) {
+        cardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      }
+    }
+
+    function switchTab(tabName) {
+      ['card', 'how', 'menu', 'barista'].forEach(tab => {
+        const view = document.getElementById('view-' + tab);
+        const btn = document.getElementById('tab-' + tab);
+        if (view) view.style.display = (tab === tabName) ? 'block' : 'none';
+        if (btn) btn.classList.toggle('active', tab === tabName);
+      });
+    }
+
+    function toggleStamp(index) {
+      const slots = document.querySelectorAll('.stamp-slot');
+      const slot = slots[index];
+      if (!slot) return;
+      
+      const isStamped = slot.style.background === 'rgb(255, 255, 255)' || slot.style.background === '#fff' || slot.style.background === 'rgb(255, 215, 0)' || slot.classList.contains('reward');
+      
+      if (isStamped) {
+        slot.style.background = '#2b2518';
+        slot.style.color = 'var(--gold)';
+        slot.style.border = '2px dashed var(--gold)';
+        slot.style.boxShadow = 'none';
+        slot.innerHTML = index + 1;
+        slot.classList.add('empty');
+        stampsCount = Math.max(0, stampsCount - 1);
+      } else {
+        slot.style.background = index === 9 ? '#ffd700' : '#fff';
+        slot.style.color = '#121214';
+        slot.style.border = index === 9 ? '2px solid #fff' : '2px solid var(--gold)';
+        slot.style.boxShadow = index === 9 ? '0 0 10px #ffd700' : 'inset 0 2px 4px rgba(0,0,0,0.3)';
+        slot.innerHTML = index === 9 ? '★' : ['☕', '🎸', '💿', '4', '5', '6', '7', '8', '9'][index] || (index + 1);
+        slot.classList.remove('empty');
+        stampsCount = Math.min(10, stampsCount + 1);
+      }
+      const counterText = document.getElementById('stamp-counter-text');
+      if (counterText) counterText.innerText = `Stamps: ${stampsCount} / 10`;
+    }
+
+    function verifyPin() {
+      const pinInput = document.getElementById('pin-input');
+      const pinError = document.getElementById('pin-error');
+      const authBox = document.getElementById('barista-auth-box');
+      const controls = document.getElementById('barista-controls');
+
+      if (pinInput && pinInput.value === '1234') {
+        if (authBox) authBox.style.display = 'none';
+        if (controls) controls.style.display = 'block';
+        if (pinError) pinError.style.display = 'none';
+      } else {
+        if (pinError) pinError.style.display = 'block';
+      }
+    }
+
+    function lockBarista() {
+      const authBox = document.getElementById('barista-auth-box');
+      const controls = document.getElementById('barista-controls');
+      const pinInput = document.getElementById('pin-input');
+
+      if (authBox) authBox.style.display = 'block';
+      if (controls) controls.style.display = 'none';
+      if (pinInput) pinInput.value = '';
+    }
+
+    function saveCardEdits() {
+      const nameInput = document.getElementById('edit-name');
+      const idInput = document.getElementById('edit-id');
+      const termsInput = document.getElementById('edit-terms');
+
+      const displayName = document.getElementById('display-name');
+      const displayId = document.getElementById('display-id');
+      const termsBox = document.getElementById('terms-display-box');
+
+      if (nameInput && displayName) displayName.innerText = nameInput.value;
+      if (idInput && displayId) displayId.innerText = idInput.value;
+      if (termsInput && termsBox) {
+        termsBox.innerHTML = `<strong style="color: var(--gold);">TERMS & CONDITIONS:</strong><br>` + termsInput.value.replace(/\n/g, '<br>');
+      }
+
+      alert('✅ Card details and terms successfully updated!');
+    }
+  </script>
+</body>
+</html>
